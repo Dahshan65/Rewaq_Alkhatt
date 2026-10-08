@@ -13,31 +13,160 @@ class RewaqApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'رواق الخط العربي',
+      title: 'رِواق الخط العربي',
       theme: ThemeData(
         useMaterial3: true,
         fontFamily: 'Arial',
-        scaffoldBackgroundColor: const Color(0xFFF5F0E6),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF9A741F),
+          seedColor: const Color(0xFF8B6914),
+          brightness: Brightness.light,
         ),
       ),
+      builder: (context, child) {
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: child!,
+        );
+      },
       home: const HomePage(),
     );
   }
 }
 
+// =====================================================
+// بيانات المحاضرات
+// =====================================================
+
+class Lesson {
+  final int number;
+  final String title;
+  final String videoId;
+
+  const Lesson({
+    required this.number,
+    required this.title,
+    required this.videoId,
+  });
+}
+
+const List<Lesson> lessons = [
+  Lesson(
+    number: 1,
+    title: 'إعلان دورة تحسين الكتابة بخط النسخ',
+    videoId: '19vpZWc3GOg',
+  ),
+  Lesson(
+    number: 2,
+    title: 'الحروف المفردة بخط النسخ وتقسيماتها',
+    videoId: 'uiDRjMCvbFY',
+  ),
+  Lesson(
+    number: 3,
+    title: 'التعريف بدورة تحسين الكتابة بخط النسخ',
+    videoId: 'hfx1nwqD7oI',
+  ),
+  Lesson(
+    number: 4,
+    title: 'الحروف العامودية – الدرس العملي',
+    videoId: 'UcvfRO46pO4',
+  ),
+  Lesson(
+    number: 5,
+    title: 'ميزان الحروف العامودية بالنقاط',
+    videoId: '9C2Cuml-qIE',
+  ),
+  Lesson(
+    number: 6,
+    title: 'الحروف العامودية – المادة النظرية',
+    videoId: 'gBowWq6FFzY',
+  ),
+  Lesson(
+    number: 7,
+    title: 'شرح طريقة كتابة اللام ألف (لأ)',
+    videoId: 'YXBhWqJbojY',
+  ),
+  Lesson(
+    number: 8,
+    title: 'الحروف الكأسية – شرح نظري',
+    videoId: '0c6MgEBZWHA',
+  ),
+  Lesson(
+    number: 9,
+    title: 'تطبيقات وتمارين الحروف الكأسية',
+    videoId: 'rWIil56x7a8',
+  ),
+  Lesson(
+    number: 10,
+    title: 'الحروف الطبقية (ب، ف) والحروف ذات الأقواس (ح، غ)',
+    videoId: 'eSdlhM7Lesw',
+  ),
+  Lesson(
+    number: 11,
+    title: 'تمارين الحروف الطبقية [ب، ت، ث، ف]',
+    videoId: 'kLOrYsuQS7U',
+  ),
+  Lesson(
+    number: 12,
+    title: 'تمارين على الحروف (ج، ح، خ، ع، غ)',
+    videoId: 'FdlwWzkMJyU',
+  ),
+  Lesson(
+    number: 13,
+    title: 'الأخطاء في كتابة الحروف الطبقية (ب، ف)',
+    videoId: '8ClIFIrd7j0',
+  ),
+  Lesson(
+    number: 14,
+    title: 'الحروف (ر، و، م، د، هـ، ى)',
+    videoId: 'UbMv3t7ZBQs',
+  ),
+  Lesson(
+    number: 15,
+    title: 'الحروف في أول ووسط وآخر الكلمة',
+    videoId: 'jyvlnsGSKUA',
+  ),
+  Lesson(
+    number: 16,
+    title: 'الحروف في وسط الكلمة',
+    videoId: '8jD6NIW36eU',
+  ),
+  Lesson(
+    number: 17,
+    title: 'الحروف في آخر الكلمة',
+    videoId: 'pMVCnEWMDIE',
+  ),
+  Lesson(
+    number: 18,
+    title: 'خواص حرف النون والراء آخر الكلمة',
+    videoId: '9P0bE23k0io',
+  ),
+  Lesson(
+    number: 19,
+    title: 'تمارين الحروف المفردة باستخدام الدوائر',
+    videoId: 'wS9ympf4ocU',
+  ),
+  Lesson(
+    number: 20,
+    title: 'خواص حرف ج',
+    videoId: '2oxuGHMWJxA',
+  ),
+];
+
+// =====================================================
+// الصفحة الرئيسية
+// =====================================================
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   Future<void> openWhatsApp() async {
-    final uri = Uri.parse(
-      'https://wa.me/962779221235',
+    final Uri url = Uri.parse(
+      'https://wa.me/962779221235?text=${Uri.encodeComponent('السلام عليكم، أريد الاستفسار عن دورة الخط العربي مع وائل دهشان')}', 
     );
 
-    if (await canLaunchUrl(uri)) {
+    if (await canLaunchUrl(url)) {
       await launchUrl(
-        uri,
+        url,
         mode: LaunchMode.externalApplication,
       );
     }
@@ -45,293 +174,37 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'رِواق الخط العربي',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'رِواق الخط العربي',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        drawer: const AppDrawer(),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-
-              const Icon(
-                Icons.auto_stories,
-                size: 85,
-                color: Color(0xFF9A741F),
-              ),
-
-              const SizedBox(height: 15),
-
-              const Text(
-                'رِواق الخط العربي',
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF6F5318),
-                ),
-              ),
-
-              const SizedBox(height: 8),
-
-              const Text(
-                'بإشراف وائل دهشان',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-
-              const SizedBox(height: 30),
-
-              Card(
-                elevation: 4,
-                child: Padding(
-                  padding: const EdgeInsets.all(22),
-                  child: Column(
-                    children: [
-                      const Icon(
-                        Icons.edit,
-                        size: 55,
-                        color: Color(0xFF9A741F),
-                      ),
-
-                      const SizedBox(height: 15),
-
-                      const Text(
-                        'تحسين الكتابة بخط النسخ بالقلم العادي',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-
-                      const SizedBox(height: 12),
-
-                      const Text(
-                        'تعلم خط النسخ خطوة بخطوة من خلال مجموعة من المحاضرات التعليمية.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          height: 1.6,
-                        ),
-                      ),
-
-                      const SizedBox(height: 22),
-
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton.icon(
-                          icon: const Icon(Icons.play_arrow),
-                          label: const Text(
-                            'الدخول إلى الدورة',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const CoursePage(),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  icon: const Icon(Icons.chat),
-                  label: const Text('التواصل عبر WhatsApp'),
-                  onPressed: openWhatsApp,
-                ),
-              ),
-
-              const SizedBox(height: 30),
-
-              const Text(
-                'رِواق الخط العربي © وائل دهشان',
-                style: TextStyle(color: Colors.grey),
-              ),
-            ],
-          ),
-        ),
+        centerTitle: true,
       ),
-    );
-  }
-}
 
-class AppDrawer extends StatelessWidget {
-  const AppDrawer({super.key});
+      drawer: const AppDrawer(),
 
-  @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.fromLTRB(
-                20,
-                55,
-                20,
-                25,
-              ),
-              color: const Color(0xFF9A741F),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'رِواق الخط العربي',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'بإشراف وائل دهشان',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-                    ),
-                  ),
-                ],
-              ),
+
+            const SizedBox(height: 20),
+
+            // الشعار النصي
+            const Icon(
+              Icons.edit,
+              size: 70,
+              color: Color(0xFF8B6914),
             ),
 
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('الرئيسية'),
-              onTap: () => Navigator.pop(context),
-            ),
+            const SizedBox(height: 15),
 
-            ListTile(
-              leading: const Icon(Icons.school),
-              title: const Text('دورة خط النسخ'),
-              onTap: () {
-                Navigator.pop(context);
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const CoursePage(),
-                  ),
-                );
-              },
-            ),
-
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('عن وائل دهشان'),
-              onTap: () {
-                Navigator.pop(context);
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const AboutPage(),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CoursePage extends StatelessWidget {
-  const CoursePage({super.key});
-
-  static const List<Map<String, String>> lessons = [
-    {
-      'number': '01',
-      'title': 'المحاضرة الأولى',
-      'video': 'REPLACE_VIDEO_ID_1',
-    },
-    {
-      'number': '02',
-      'title': 'المحاضرة الثانية',
-      'video': 'REPLACE_VIDEO_ID_2',
-    },
-    {
-      'number': '03',
-      'title': 'المحاضرة الثالثة',
-      'video': 'REPLACE_VIDEO_ID_3',
-    },
-    {
-      'number': '04',
-      'title': 'المحاضرة الرابعة',
-      'video': 'REPLACE_VIDEO_ID_4',
-    },
-    {
-      'number': '05',
-      'title': 'المحاضرة الخامسة',
-      'video': 'REPLACE_VIDEO_ID_5',
-    },
-    {
-      'number': '06',
-      'title': 'المحاضرة السادسة',
-      'video': 'REPLACE_VIDEO_ID_6',
-    },
-    {
-      'number': '07',
-      'title': 'المحاضرة السابعة',
-      'video': 'REPLACE_VIDEO_ID_7',
-    },
-    {
-      'number': '08',
-      'title': 'المحاضرة الثامنة',
-      'video': 'REPLACE_VIDEO_ID_8',
-    },
-    {
-      'number': '09',
-      'title': 'المحاضرة التاسعة',
-      'video': 'REPLACE_VIDEO_ID_9',
-    },
-    {
-      'number': '10',
-      'title': 'المحاضرة العاشرة',
-      'video': 'REPLACE_VIDEO_ID_10',
-    },
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('محاضرات دورة خط النسخ'),
-          centerTitle: true,
-        ),
-        body: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
             const Text(
-              'تحسين الكتابة بخط النسخ بالقلم العادي',
-              textAlign: TextAlign.center,
+              'رِواق الخط العربي',
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -339,21 +212,99 @@ class CoursePage extends StatelessWidget {
             const SizedBox(height: 8),
 
             const Text(
-              'اختر المحاضرة التي تريد مشاهدتها',
-              textAlign: TextAlign.center,
+              'بإشراف وائل دهشان',
               style: TextStyle(
-                color: Colors.grey,
-                fontSize: 15,
+                fontSize: 18,
+                color: Colors.black54,
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 35),
 
-            ...lessons.map(
-              (lesson) => LessonCard(
-                number: lesson['number']!,
-                title: lesson['title']!,
-                videoId: lesson['video']!,
+            // بطاقة الدورة
+            Card(
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(22),
+                child: Column(
+                  children: [
+
+                    const Text(
+                      'تحسين الكتابة بخط النسخ بالقلم العادي',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    const Text(
+                      'دورة متكاملة لتعلم أساسيات خط النسخ وتحسين الكتابة بطريقة عملية ومنظمة.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        height: 1.7,
+                      ),
+                    ),
+
+                    const SizedBox(height: 25),
+
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CoursePage(),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.menu_book),
+                        label: const Text(
+                          'الدخول إلى الدورة',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: openWhatsApp,
+                        icon: const Icon(Icons.chat),
+                        label: const Text(
+                          'التواصل عبر واتساب',
+                          style: TextStyle(fontSize: 17),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
+            const Text(
+              'تعلم الخط العربي خطوة بخطوة',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            const Text(
+              'شاهد المحاضرات بالترتيب وطبّق التمارين مع كل درس.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.black54,
               ),
             ),
           ],
@@ -363,77 +314,167 @@ class CoursePage extends StatelessWidget {
   }
 }
 
-class LessonCard extends StatelessWidget {
-  final String number;
-  final String title;
-  final String videoId;
+// =====================================================
+// القائمة الجانبية
+// =====================================================
 
-  const LessonCard({
-    super.key,
-    required this.number,
-    required this.title,
-    required this.videoId,
-  });
+class AppDrawer extends StatelessWidget {
+  const AppDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      elevation: 2,
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 8,
-        ),
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
 
-        leading: CircleAvatar(
-          backgroundColor: const Color(0xFF9A741F),
-          child: Text(
-            number,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: Color(0xFF8B6914),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.edit,
+                  size: 55,
+                  color: Colors.white,
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'رِواق الخط العربي',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  'وائل دهشان',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
 
-        title: Text(
-          title,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 17,
+          ListTile(
+            leading: const Icon(Icons.home),
+            title: const Text('الرئيسية'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomePage(),
+                ),
+                (route) => false,
+              );
+            },
           ),
-        ),
 
-        subtitle: const Text(
-          'اضغط لمشاهدة المحاضرة',
-        ),
+          ListTile(
+            leading: const Icon(Icons.menu_book),
+            title: const Text('دورة خط النسخ'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CoursePage(),
+                ),
+              );
+            },
+          ),
 
-        trailing: const Icon(
-          Icons.play_circle_fill,
-          color: Color(0xFF9A741F),
-          size: 34,
-        ),
+          ListTile(
+            leading: const Icon(Icons.person),
+            title: const Text('عن وائل دهشان'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AboutPage(),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-        onTap: () {
-          if (videoId.startsWith('REPLACE')) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                  'سيتم إضافة رابط هذه المحاضرة في الخطوة التالية.',
+// =====================================================
+// صفحة الدورة
+// =====================================================
+
+class CoursePage extends StatelessWidget {
+  const CoursePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('دورة خط النسخ'),
+        centerTitle: true,
+      ),
+
+      body: ListView.builder(
+        padding: const EdgeInsets.all(12),
+        itemCount: lessons.length,
+        itemBuilder: (context, index) {
+
+          final lesson = lessons[index];
+
+          return Card(
+            margin: const EdgeInsets.only(bottom: 10),
+            elevation: 2,
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 15,
+                vertical: 8,
+              ),
+
+              leading: CircleAvatar(
+                backgroundColor: const Color(0xFF8B6914),
+                child: Text(
+                  '${lesson.number}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            );
-            return;
-          }
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => VideoPage(
-                videoId: videoId,
-                title: title,
+              title: Text(
+                lesson.title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
+
+              trailing: const Icon(
+                Icons.play_circle_fill,
+                color: Color(0xFF8B6914),
+                size: 35,
+              ),
+
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VideoPage(
+                      lesson: lesson,
+                    ),
+                  ),
+                );
+              },
             ),
           );
         },
@@ -442,14 +483,16 @@ class LessonCard extends StatelessWidget {
   }
 }
 
+// =====================================================
+// صفحة الفيديو
+// =====================================================
+
 class VideoPage extends StatefulWidget {
-  final String videoId;
-  final String title;
+  final Lesson lesson;
 
   const VideoPage({
     super.key,
-    required this.videoId,
-    required this.title,
+    required this.lesson,
   });
 
   @override
@@ -464,12 +507,13 @@ class _VideoPageState extends State<VideoPage> {
     super.initState();
 
     controller = YoutubePlayerController.fromVideoId(
-      videoId: widget.videoId,
+      videoId: widget.lesson.videoId,
       autoPlay: false,
       params: const YoutubePlayerParams(
-        showFullscreenButton: true,
         showControls: true,
-        enableCaption: false,
+        showFullscreenButton: true,
+        strictRelatedVideos: true,
+        privacyEnhancedMode: true,
       ),
     );
   }
@@ -482,33 +526,65 @@ class _VideoPageState extends State<VideoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-          centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'المحاضرة ${widget.lesson.number}',
         ),
-        body: Column(
+      ),
+
+      body: SingleChildScrollView(
+        child: Column(
           children: [
+
+            const SizedBox(height: 10),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Text(
+                widget.lesson.title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 18),
+
             YoutubePlayer(
               controller: controller,
               aspectRatio: 16 / 9,
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 25),
 
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
-                widget.title,
-                textAlign: TextAlign.center,
+                'المحاضرة ${widget.lesson.number} من ${lessons.length}',
                 style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                  color: Colors.black54,
                 ),
               ),
             ),
+
+            const SizedBox(height: 20),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.arrow_forward),
+                label: const Text('العودة إلى المحاضرات'),
+              ),
+            ),
+
+            const SizedBox(height: 30),
           ],
         ),
       ),
@@ -516,53 +592,75 @@ class _VideoPageState extends State<VideoPage> {
   }
 }
 
+// =====================================================
+// صفحة عن وائل دهشان
+// =====================================================
+
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('عن وائل دهشان'),
-          centerTitle: true,
-        ),
-        body: const Padding(
-          padding: EdgeInsets.all(25),
-          child: Column(
-            children: [
-              SizedBox(height: 30),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('عن وائل دهشان'),
+        centerTitle: true,
+      ),
 
-              Icon(
-                Icons.person,
-                size: 90,
-                color: Color(0xFF9A741F),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(25),
+        child: Column(
+          children: [
+
+            const Icon(
+              Icons.person,
+              size: 80,
+              color: Color(0xFF8B6914),
+            ),
+
+            const SizedBox(height: 20),
+
+            const Text(
+              'وائل دهشان',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
               ),
+            ),
 
-              SizedBox(height: 20),
+            const SizedBox(height: 15),
 
-              Text(
-                'وائل دهشان',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
+            const Text(
+              'مدرس ومهتم بالخط العربي وتعليم الكتابة العربية، '
+              'ويقدم دروسًا ودورات متخصصة في تحسين الخط العربي.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                height: 1.8,
               ),
+            ),
 
-              SizedBox(height: 15),
+            const SizedBox(height: 30),
 
-              Text(
-                'معلم للغة العربية والخط العربي، '
-                'ومشرف على رِواق الخط العربي.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                  height: 1.7,
-                ),
+            const Text(
+              'رِواق الخط العربي',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
               ),
-            ],
-          ),
+            ),
+
+            const SizedBox(height: 10),
+
+            const Text(
+              'مساحة تعليمية لتعلم الخط العربي بأسلوب مبسط ومنظم.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 17,
+                height: 1.7,
+              ),
+            ),
+          ],
         ),
       ),
     );
