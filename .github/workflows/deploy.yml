@@ -2,7 +2,8 @@ name: Deploy Flutter Web
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -14,15 +15,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
+      - name: Get source code
+        uses: actions/checkout@v4
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: stable
-      - run: flutter pub get
-      - run: flutter build web --release --base-href /Rewaq_Alkhatt/
-      - uses: actions/upload-pages-artifact@v3
+
+      - name: Build Flutter web app
+        working-directory: rewaq_alkhatt
+        run: |
+          flutter pub get
+          flutter build web --release --base-href /Rewaq_Alkhatt/
+
+      - name: Upload web files
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: build/web
+          path: rewaq_alkhatt/build/web
 
   deploy:
     needs: build
@@ -31,5 +41,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
+      - name: Publish website
+        id: deployment
         uses: actions/deploy-pages@v4
