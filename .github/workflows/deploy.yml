@@ -18,21 +18,18 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
-      - name: Build web app
-        run: |
-          cd rewaq_alkhatt
-          flutter pub get
-          flutter build web --release --base-href /Rewaq_Alkhatt/
+      - run: flutter pub get
+      - run: flutter build web --release --base-href /Rewaq_Alkhatt/
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: rewaq_alkhatt/build/web
+          path: build/web
 
   deploy:
+    needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
